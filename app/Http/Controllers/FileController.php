@@ -52,6 +52,7 @@ class FileController extends Controller
         $filename = str_contains($filename, '/') ? last(explode('/', $filename)) : $filename;
 
         File::query()->where('name', $filename)->orWhere('path', $filepath)->firstOrFail();
+
         if (Storage::disk('minio')->exists($filepath)) {
             return $this->service->archive($filepath);
             //return Storage::disk('minio')->response($filename);
