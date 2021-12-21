@@ -11,12 +11,13 @@ class CreateFilesTable extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('files', function (Blueprint $table) {
+        Schema::create('files', static function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->float('size');
+            $table->string('path');
         });
     }
 
@@ -25,7 +26,7 @@ class CreateFilesTable extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('files');
     }

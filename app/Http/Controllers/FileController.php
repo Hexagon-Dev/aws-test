@@ -25,16 +25,18 @@ class FileController extends Controller
         return File::all()->toJson();
     }
 
-    public function saveFile(Request $request): string
+    public function saveFile(Request $request, string $path = null): string
     {
         $file = $request->file('file');
         $filename = $file->getClientOriginalName();
+        $path = is_null($path) ? '' : $path;
 
-        Storage::disk('minio')->putFileAs('files', $file, $file->getClientOriginalName());
+        Storage::disk('minio')->putFileAs($path, $file, $filename);
 
         $data = [
             'name' => $filename,
             'size' => $file->getSize(),
+            'path' => $path,
         ];
 
         if (File::query()->insert($data)) {
@@ -44,13 +46,15 @@ class FileController extends Controller
         return response()->json(['error' => 'con not load file'], Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
-    public function downloadFile(String $filename)
+    public function downloadFile(string $filename)
     {
-        File::query()->where('name', $filename)->firstOrFail();
+        $filepath = $filename;
+        $filename = str_contains($filename, '/') ? last(explode('/', $filename)) : $filename;
 
-        if (Storage::disk('minio')->exists('files/' . $filename)) {
-            return $this->service->archive($filename);
-            //return Storage::disk('minio')->response('files/' . $filename);
+        File::query()->where('name', $filename)->orWhere('path', $filepath)->firstOrFail();
+        if (Storage::disk('minio')->exists($filepath)) {
+            return $this->service->archive($filepath);
+            //return Storage::disk('minio')->response($filename);
         }
 
         return false;
