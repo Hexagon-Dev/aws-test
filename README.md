@@ -20,5 +20,5 @@ Go to http://localhost:9001 and create service user, copy keys to .env file.
 Done.  
 ## Usage
 To upload file, send it as POST multipart request with file on endpoint `localhost/api/files`.  
-To look for all files make GET request on `localhost/api/files`.
+To look for all files make GET request on `localhost/api/files`.  
 To download file make GET request on `localhost/api/files/your_file_name.txt`.
