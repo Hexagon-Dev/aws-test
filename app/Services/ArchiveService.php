@@ -13,7 +13,7 @@ class ArchiveService implements ArchiveServiceInterface
 
     public function archive(string $filename): StreamedResponse
     {
-        $files = Storage::disk('minio')->allFiles($filename);
+        $files = Storage::cloud()->allFiles($filename);
 
         if (empty($files)) {
             $files = [$filename];

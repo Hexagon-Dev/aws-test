@@ -15,6 +15,8 @@ return [
 
     'default' => env('FILESYSTEM_DRIVER', 'local'),
 
+    'cloud' => env('FILESYSTEM_CLOUD', 'minio'),
+
     /*
     |--------------------------------------------------------------------------
     | Filesystem Disks
@@ -55,12 +57,12 @@ return [
 
         'minio' => [
             'driver' => 's3',
-            'endpoint' => env('MINIO_ENDPOINT', 'http://127.0.0.1:9000'),
+            'endpoint' => env('MINIO_ENDPOINT', 'http://storage:9000'),
             'use_path_style_endpoint' => true,
-            'key' => env('MINIO_KEY'),
-            'secret' => env('MINIO_SECRET'),
-            'region' => env('MINIO_REGION'),
-            'bucket' => env('MINIO_BUCKET'),
+            'key' => env('AWS_KEY'),
+            'secret' => env('AWS_SECRET'),
+            'region' => env('AWS_DEFAULT_REGION'),
+            'bucket' => env('AWS_BUCKET'),
         ],
 
     ],
